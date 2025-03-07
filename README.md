@@ -9,8 +9,8 @@ This bot sends the latest checked tasks via telegram.
 
 Python3 must already be installed in your environments. You may create an virtual environement as well to not trash your memory space. 
 
+ - To run your bot correctly you should install next requirements to your env:
 
-1. To run your bot correctly you should install next requirements to your env:
 
 1. python-telegram-bot==13.7
 2. requests==2.28.1
@@ -22,7 +22,7 @@ or just but the next line of code in your bash terminal:
   pip install -r requirements.txt
 ```
 
-2. In your created .env file you should add your apies
+- In your created .env file you should add your apies
 
 ```bash
     DEVMAN_API=YOUR_DEVMAN_API
