@@ -1,50 +1,47 @@
-# Бот Чекер!
+# Bot checker
 
-<p align="center">
-  <img src="image.png" width="480">
-</p>
+This bot sends the latest checked tasks via telegram. 
+
+## Environment
+
+### Requirements
 
 
-## Данный бот автоматизирует процесс проверки отправленных заданий
+Python3 must already be installed in your environments. You may create an virtual environement as well to not trash your memory space. 
 
-### Шаги для запуска бота!
 
-1. Клонирование репозитория:
+1. To run your bot correctly you should install next requirements to your env:
 
-```bash
-    git clone https://github.com/azamat1012/Bot_checker.git
-```
-    
-2. Поменяйте директорию:
+1. python-telegram-bot==13.7
+2. requests==2.28.1
+3. python-dotenv==0.21.0
 
-```bash
-    cd Bot_checker
-```
-
-3. Установка зависимостей:
+or just but the next line of code in your bash terminal:
 
 ```bash
-    pip install -r requirements.txt
+  pip install -r requirements.txt
 ```
 
-4. Создайте файл с расширением .env
+2. In your created .env file you should add your apies
 
 ```bash
-    touch .env
+    DEVMAN_API=YOUR_DEVMAN_API
+    TG_API=YOUR_TG_API
 ```
 
-5. В своем .env файле напишите два ключа:
 
-```bash
-    DEVMAN_API=ВАШ_ДЕВМАН_АПИ
-    TG_API=ВАШ_ТГ_АПИ
-```
-6. Запуск бота
+## Run
 
 ```bash
     python main.py
 ```
 
-7. Далее Вам следует запустить Вашего бота в ТГ  и бот начнет поиск заданий.
+You will see something like following:
 
-Удачного пользования!!
+2025-03-07 12:27:10,912 - INFO - Bot is starting
+2025-03-07 12:27:10,913 - INFO - Scheduler started
+
+
+## Project Goals
+
+The code is written to automate the proccess of seeking the checked tasks on the platform "devman"
