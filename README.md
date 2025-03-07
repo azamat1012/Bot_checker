@@ -39,6 +39,7 @@ or just but the next line of code in your bash terminal:
 You will see something like following:
 
 2025-03-07 12:27:10,912 - INFO - Bot is starting
+
 2025-03-07 12:27:10,913 - INFO - Scheduler started
 
 
