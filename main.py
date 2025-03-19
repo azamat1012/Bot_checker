@@ -4,8 +4,24 @@ import logging
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext
 import environ
+from dotenv import load_dotenv
+import os
 
 logger = logging.getLogger(__name__)
+
+
+class LogHandler(logging.Handler):
+    def __init__(self, bot, chat_id):
+        super().__init__()
+        self.bot = bot
+        self.chat_id = chat_id
+
+    def emit(self, record):
+        log_entry = self.format(record)
+        try:
+            self.bot.send_message(chat_id=self.chat_id, text=log_entry)
+        except Exception as e:
+            print(f"Бот упал с ошибкой: {e}")
 
 
 def get_checks(context: CallbackContext, devman_token):
@@ -46,7 +62,9 @@ def get_checks(context: CallbackContext, devman_token):
 def start(update: Update, context: CallbackContext):
     chat_id = update.message.chat_id
     devman_token = context.bot_data["devman_token"]
-    update.message.reply_text("Начинаю поиск новых проверок!")
+    update.message.reply_text(
+        f"Начинаю поиск новых проверок!")
+    logger.info(f"Бот запущен пользователен {chat_id}") 
 
     if not context.chat_data.get("polling_started"):
         context.job_queue.run_repeating(
@@ -62,25 +80,32 @@ def main():
         format='%(asctime)s - %(levelname)s - %(message)s'
     )
 
-    env = environ.Env(
-        DEBUG=(bool, False)
-    )
-    environ.Env.read_env()
-    devman_token = env("DEVMAN_TOKEN")
-    tg_bot_token = env("TG_BOT_TOKEN")
+    load_dotenv()
+    devman_token = os.getenv("DEVMAN_TOKEN")
+    tg_bot_token = os.getenv("TG_BOT_TOKEN")
+    admin_chat_id = os.getenv("ADMIN_CHAT_ID") 
 
     if not devman_token:
-        logger.error(
-            "TG_BOT_TOKEN не был найден. Пожалуйста, напишите TG_BOT_TOKEN в .env")
+        logger.error("DEVMAN_TOKEN не найден в .env")
+        return
     if not tg_bot_token:
-        logger.error(
-            "TG_BOT_TOKEN токен не был найден. Пожалуйста, напишите TG_BOT_TOKEN в .env")
-
+        logger.error("TG_BOT_TOKEN не найден в .env")
+        return
+    if not admin_chat_id:
+        logger.error("ADMIN_CHAT_ID не найден в .env")
+        return
+        
     updater = Updater(tg_bot_token, use_context=True)
     updater.dispatcher.bot_data["devman_token"] = devman_token
     dp = updater.dispatcher
     dp.add_handler(CommandHandler('start', start))
-    logger.info("Bot is starting")
+    
+    telegram_handler = TelegramLogHandler(updater.bot, admin_chat_id)
+    telegram_handler.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    telegram_handler.setFormatter(formatter)
+    logger.addHandler(telegram_handler)
+    logger.info("Бот начинается")
     updater.start_polling()
     updater.idle()
 
