@@ -27,8 +27,10 @@ or just but the next line of code in your bash terminal:
 ```bash
     DEVMAN_API=YOUR_DEVMAN_API
     TG_API=YOUR_TG_API
+    ADMIN_CHAT_ID=YOUR_CHAT_ID
 ```
 
+PS. ADMIN_CHAT_ID is needed to get the loggs
 
 ## Run
 
